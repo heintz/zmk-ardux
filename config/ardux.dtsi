@@ -516,9 +516,9 @@
 			label = "BT";
 			bindings = <
 				LEADING_NONES
-				ARDUX_BT_TOP    &bt BT_SEL 2 &bt BT_SEL 1 &bt BT_SEL 0
+				&bt BT_SEL 4 &bt BT_SEL 2 &bt BT_SEL 1 &bt BT_SEL 0
 				MIDDLE_NONES
-				ARDUX_BT_BOTTOM &bt BT_SEL 5 &bt BT_SEL 4 &bt BT_SEL 3
+				&bt BT_DISC 4 &bt BT_DISC 2 &bt BT_DISC 1 &bt BT_DISC 0
 				TRAILING_NONES
 			>;
 		};
