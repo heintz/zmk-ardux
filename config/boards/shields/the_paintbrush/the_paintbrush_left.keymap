@@ -27,5 +27,9 @@
 #define MIDDLE_NONES NONE(0, 0, 0)
 #define TRAILING_NONES NONE(0, 0, 0)
 
+// Enable disconnecting for iPhone, iPad
+#define ARDUX_BT_TOP &bt BT_DISC 4
+#define ARDUX_BT_BOTTOM &bt BT_DISC 5
+
 // Include main ardux.io keymap
 #include "../../../ardux.dtsi"
