@@ -69,9 +69,9 @@ jobs:
             shield: cradio_ardux_thumb_right
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Cache west modules
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         env:
           cache-name: cache-zephyr-modules
         with:
@@ -105,8 +105,8 @@ jobs:
             ARTIFACT_NAME="${{ matrix.board }}-zmk-ardux"
           fi
 
-          echo ::set-output name=shield-arg::${SHIELD_ARG}
-          echo ::set-output name=artifact-name::${ARTIFACT_NAME}
+          echo shield-arg=${SHIELD_ARG} >>$GITHUB_OUTPUT
+          echo artifact-name=${ARTIFACT_NAME} >>$GITHUB_OUTPUT
       - name: Build (west build)
         run: west build -s zmk/app -b ${{ matrix.board }} -- ${{ steps.variables.outputs.shield-arg }} -DZMK_CONFIG="${GITHUB_WORKSPACE}/config"
       - name: ARDUX implementation dtsi file
@@ -119,7 +119,7 @@ jobs:
       - name: Prep artifact (${{ matrix.shield }}-${{ matrix.board }}-zmk-ardux.uf2)
         run: cp build/zephyr/zmk.uf2 ${{ matrix.shield }}-${{ matrix.board }}-zmk-ardux.uf2
       - name: Archive artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: '${{ steps.variables.outputs.artifact-name }}'
           path: |
@@ -135,17 +135,17 @@ jobs:
     steps:
       - name: Get current date/time
         id: date
-        run: echo "::set-output name=date::$(date +'%Y%m%d-%H%M')"
+        run: echo "date=$(date +'%Y%m%d-%H%M')" >>$GITHUB_OUTPUT
       - name: Generate release text
         id: release_text
         run: >
-          echo "::set-output name=release_text::$(echo '<b>Precompiled firmware files for ARDUX</b><br><br>
+          echo "release_text=$(echo '<b>Precompiled firmware files for ARDUX</b><br><br>
           Download a firmware file by expanding "Assets", right clicking, and choosing "Save File As" or "Save Link As".
           <br>${{ github.event.inputs.releaseBody }}
           <br>Released on ${{ steps.date.outputs.date }}.
-          <br><br>${{ steps.docker_build.outputs.commits }}')"
+          <br><br>${{ steps.docker_build.outputs.commits }}')" >>$GITHUB_OUTPUT
       - name: Download build artifacts for release
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           path: release
       - name: List files to include in release

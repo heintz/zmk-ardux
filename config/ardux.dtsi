@@ -7,6 +7,7 @@
 #include <behaviors.dtsi>
 #include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/zmk/outputs.h>
+#include <dt-bindings/zmk/pointing.h>
 
 /*****************************************
  * Macros for filling in "&none" in the right places in the keymap for re-use needs
@@ -42,7 +43,7 @@
  *   - Update/adjust the key positions using your boards keymap 
  *     - See below for additional details
  *   - YOU MUST SET THE FOLLOWING CONFIG VALUES FOR THIS SETUP TO WORK PROPERLY IN YOUR BOARDS .conf FILE
- *     - CONFIG_ZMK_COMBO_MAX_COMBOS_PER_KEY=16
+ *     - CONFIG_ZMK_COMBO_MAX_COMBOS_PER_KEY=24
  *     - CONFIG_ZMK_COMBO_MAX_KEYS_PER_COMBO=8
  *     - CONFIG_ZMK_COMBO_MAX_PRESSED_COMBOS=8
  *****************************************/
@@ -148,7 +149,7 @@
 #if defined ARDUX_RIGHT
 #define ARDUX_LAYER_CUSTOM                                            \
 		custom {                                                       \
-			label = "Custom";                                          \
+			display-name = "Custom";                                          \
 			bindings = <                                               \
 				LEADING_NONES                                          \
 				&kp C_MUTE &kp INS   &kp C_VOL_UP  &none               \
@@ -161,7 +162,7 @@
 #if defined ARDUX_LEFT
 #define ARDUX_LAYER_CUSTOM                                            \
 		custom {                                                       \
-			label = "Custom";                                          \
+			display-name = "Custom";                                          \
 			bindings = <                                               \
 				LEADING_NONES                                          \
 				&none               &kp C_VOL_UP  &kp INS   &kp C_MUTE \
@@ -209,9 +210,10 @@
 #define LAYER_ID_PARENTHETICALS 3
 #define LAYER_ID_NAVIGATION 4
 #define LAYER_ID_BT_SEL 5
-#define LAYER_ID_CUSTOM 6
-#define LAYER_ID_BIG_SYM 7
-#define LAYER_ID_BIG_FUNCTION 8
+#define LAYER_ID_MOUSE 6
+#define LAYER_ID_CUSTOM 7
+#define LAYER_ID_BIG_SYM 8
+#define LAYER_ID_BIG_FUNCTION 9
 
 /*****************************************
  * Standard ARDUX combo definitions
@@ -246,7 +248,7 @@
 		combo_j           { layers = <LAYER_ID_BASE>; timeout-ms = <TIMEOUT_COMBO_2>; key-positions = <KEY_T KEY_S>; bindings = <&kp J>; };
 		combo_w           { layers = <LAYER_ID_BASE>; timeout-ms = <TIMEOUT_COMBO_2>; key-positions = <KEY_A KEY_S>; bindings = <&kp W>; };
 		combo_k           { layers = <LAYER_ID_BASE>; timeout-ms = <TIMEOUT_COMBO_2>; key-positions = <KEY_Y KEY_O>; bindings = <&kp K>; };
-		combo_period       { layers = <LAYER_ID_BASE>; timeout-ms = <TIMEOUT_COMBO_2>; key-positions = <KEY_A KEY_Y>; bindings = <&kp PERIOD>; };
+		combo_period      { layers = <LAYER_ID_BASE>; timeout-ms = <TIMEOUT_COMBO_2>; key-positions = <KEY_A KEY_Y>; bindings = <&kp PERIOD>; };
 		combo_comma       { layers = <LAYER_ID_BASE>; timeout-ms = <TIMEOUT_COMBO_2>; key-positions = <KEY_A KEY_I>; bindings = <&kp COMMA>; };
 		combo_slash       { layers = <LAYER_ID_BASE>; timeout-ms = <TIMEOUT_COMBO_2>; key-positions = <KEY_A KEY_O>; bindings = <&kp SLASH>; };
 		combo_exclamation { layers = <LAYER_ID_BASE>; timeout-ms = <TIMEOUT_COMBO_2>; key-positions = <KEY_T KEY_I>; bindings = <&kp EXCL>; };
@@ -256,11 +258,16 @@
 		combo_nine  { layers = <LAYER_ID_NUMBERS>; timeout-ms = <TIMEOUT_COMBO_2>; key-positions = <KEY_E KEY_Y>; bindings = <&kp N9>; };
 		combo_zero  { layers = <LAYER_ID_NUMBERS>; timeout-ms = <TIMEOUT_COMBO_2>; key-positions = <KEY_Y KEY_I>; bindings = <&kp N0>; };
 
+		combo_num_period { layers = <LAYER_ID_NUMBERS>; timeout-ms = <TIMEOUT_COMBO_2>; key-positions = <KEY_Y KEY_A>; bindings = <&kp PERIOD>; };
+		combo_num_comma { layers = <LAYER_ID_NUMBERS>; timeout-ms = <TIMEOUT_COMBO_2>; key-positions = <KEY_I KEY_A>; bindings = <&kp COMMA>; };
+		combo_num_enter  { layers = <LAYER_ID_NUMBERS>; timeout-ms = <TIMEOUT_COMBO_2>; key-positions = <KEY_E KEY_A>; bindings = <&kp ENTER>; };
+
 		/*****************************************
 		 * 3 key combos
 		 *****************************************/
 		combo_esc              { timeout-ms = <TIMEOUT_COMBO_3>; key-positions = <KEY_A KEY_R KEY_O>; bindings = <&kp ESC>; };
 		combo_layer_navigation { timeout-ms = <TIMEOUT_COMBO_3>; key-positions = <KEY_R KEY_E KEY_I>; bindings = <&tog LAYER_ID_NAVIGATION>; };
+		combo_layer_mouse      { timeout-ms = <TIMEOUT_COMBO_3>; key-positions = <KEY_A KEY_T KEY_Y>; bindings = <&tog LAYER_ID_MOUSE>; };
 
 		combo_m            { layers = <LAYER_ID_BASE>; timeout-ms = <TIMEOUT_COMBO_3>; key-positions = <KEY_Y KEY_I KEY_O>; bindings = <&kp M>; };
 		combo_d            { layers = <LAYER_ID_BASE>; timeout-ms = <TIMEOUT_COMBO_3>; key-positions = <KEY_A KEY_R KEY_T>; bindings = <&kp D>; };
@@ -290,23 +297,23 @@
  *****************************************/
 / {
 	behaviors {
-		layer_base_kp: layer_base_kp { compatible = "zmk,behavior-hold-tap"; label = "layer_base_kp"; 
-						#binding-cells = <2>; tapping_term_ms = <TIMEOUT_LAYER_HOLD>; flavor = "tap-preferred"; 
+		layer_base_kp: layer_base_kp { compatible = "zmk,behavior-hold-tap"; display-name = "layer_base_kp";
+						#binding-cells = <2>; tapping-term-ms = <TIMEOUT_LAYER_HOLD>; flavor = "tap-preferred";
 						bindings = <&mo>, <&kp>; };
-		layer_numbers_kp: layer_numbers_kp { compatible = "zmk,behavior-hold-tap"; label = "layer_numbers_kp"; 
-						#binding-cells = <2>; tapping_term_ms = <TIMEOUT_LAYER_HOLD>; flavor = "tap-preferred"; 
+		layer_numbers_kp: layer_numbers_kp { compatible = "zmk,behavior-hold-tap"; display-name = "layer_numbers_kp";
+						#binding-cells = <2>; tapping-term-ms = <TIMEOUT_LAYER_HOLD>; flavor = "tap-preferred";
 						bindings = <&mo>, <&kp>; };
-		layer_symbols_kp: layer_symbols_kp { compatible = "zmk,behavior-hold-tap"; label = "layer_symbols_kp"; 
-						#binding-cells = <2>; tapping_term_ms = <TIMEOUT_LAYER_HOLD>; flavor = "tap-preferred"; 
+		layer_symbols_kp: layer_symbols_kp { compatible = "zmk,behavior-hold-tap"; display-name = "layer_symbols_kp";
+						#binding-cells = <2>; tapping-term-ms = <TIMEOUT_LAYER_HOLD>; flavor = "tap-preferred";
 						bindings = <&mo>, <&kp>; };
-		layer_parentheticals_kp: layer_parentheticals_kp { compatible = "zmk,behavior-hold-tap"; label = "layer_parentheticals_kp";
-						#binding-cells = <2>; tapping_term_ms = <TIMEOUT_LAYER_HOLD>; flavor = "tap-preferred";
+		layer_parentheticals_kp: layer_parentheticals_kp { compatible = "zmk,behavior-hold-tap"; display-name = "layer_parentheticals_kp";
+						#binding-cells = <2>; tapping-term-ms = <TIMEOUT_LAYER_HOLD>; flavor = "tap-preferred";
 						bindings = <&mo>, <&kp>; };
-		layer_custom_kp: layer_custom_kp { compatible = "zmk,behavior-hold-tap"; label = "layer_custom_kp";
-						#binding-cells = <2>; tapping_term_ms = <TIMEOUT_LAYER_HOLD>; flavor = "tap-preferred";
+		layer_custom_kp: layer_custom_kp { compatible = "zmk,behavior-hold-tap"; display-name = "layer_custom_kp";
+						#binding-cells = <2>; tapping-term-ms = <TIMEOUT_LAYER_HOLD>; flavor = "tap-preferred";
 						bindings = <&mo>, <&kp>; };
-		ctrl_alt_kp: ctrl_alt_kp { compatible = "zmk,behavior-hold-tap"; label = "ctrl_alt_kp";
-						#binding-cells = <2>; tapping_term_ms = <TIMEOUT_LAYER_HOLD>; flavor = "tap-preferred";
+		ctrl_alt_kp: ctrl_alt_kp { compatible = "zmk,behavior-hold-tap"; display-name = "ctrl_alt_kp";
+						#binding-cells = <2>; tapping-term-ms = <TIMEOUT_LAYER_HOLD>; flavor = "tap-preferred";
 						bindings = <&sk>, <&sk>; };
 	};
 };
@@ -321,7 +328,7 @@
 		compatible = "zmk,keymap";
 		#if defined ARDUX_BIG
 		base {
-			label = "*ARDUX*";
+			display-name = "*ARDUX*";
 			bindings = <
 				BIG_LEADING_NONES
 				&kp MINUS            &layer_parentheticals_kp LAYER_ID_PARENTHETICALS ARDUX_BASE_A    &kp ARDUX_BASE_R     &kp ARDUX_BASE_T     &layer_numbers_kp LAYER_ID_NUMBERS ARDUX_BASE_S
@@ -336,7 +343,7 @@
 		};
 		#else
 		base {
-			label = "ARDUX";
+			display-name = "ARDUX";
 			bindings = <
 				LEADING_NONES
 				&layer_parentheticals_kp LAYER_ID_PARENTHETICALS ARDUX_BASE_A  &kp ARDUX_BASE_R     &kp ARDUX_BASE_T     &layer_numbers_kp LAYER_ID_NUMBERS ARDUX_BASE_S
@@ -349,8 +356,24 @@
 			>;
 		};
 		#endif
+		#if defined ARDUX_BIG
 		numbers {
-			label = "Number";
+			display-name = "Number";
+			bindings = <
+				BIG_LEADING_NONES
+				&kp MINUS &kp N1 &kp N2 &kp N3 &mo LAYER_ID_NUMBERS
+				BIG_BETWEEN_ROW_ONE_TWO_NONES
+				&kp SLASH &kp N4 &kp N5 &kp N6 &none
+				BIG_BETWEEN_ROW_TWO_THREE_NONES
+				&kp COLON &kp TAB &none &none &none
+				BIG_BETWEEN_ROW_THREE_THUMBS
+				&kp SPACE &kp UNDERSCORE &kp TAB
+				BIG_TRAILING_NONES
+			>;
+		};
+		#else
+		numbers {
+			display-name = "Number";
 			bindings = <
 				LEADING_NONES
 				&kp N1                                              &kp N2    &kp N3    &mo LAYER_ID_NUMBERS
@@ -359,8 +382,9 @@
 				TRAILING_NONES
 			>;
 		};
+		#endif
 		symbols {
-			label = "Symbol";
+			display-name = "Symbol";
 			bindings = <
 				LEADING_NONES
 				&kp EXCL                                            &kp BSLH  &kp SEMI  &kp GRAVE
@@ -370,7 +394,7 @@
 			>;
 		};
 		parentheticals {
-			label = "Paren";
+			display-name = "Paren";
 			bindings = <
 				LEADING_NONES
 				&mo LAYER_ID_PARENTHETICALS                         &kp LPAR  &kp RPAR  &kp LBRC
@@ -380,7 +404,7 @@
 			>;
 		};
 		navigation {
-			label = "Nav";
+			display-name = "Nav";
 			bindings = <
 				LEADING_NONES
 				&kp HOME                                            &kp UP    &kp END   &kp PG_UP
@@ -389,8 +413,24 @@
 				TRAILING_NONES
 			>;
 		};
+		#if defined ARDUX_BIG
 		bt {
-			label = "BT";
+			display-name = "BT";
+			bindings = <
+				BIG_LEADING_NONES
+				&none &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 ARDUX_BT_TOP
+				BIG_BETWEEN_ROW_ONE_TWO_NONES
+				&none &bt BT_SEL 3 &bt BT_SEL 4 &bt BT_SEL 5 ARDUX_BT_BOTTOM
+				BIG_BETWEEN_ROW_TWO_THREE_NONES
+				&none &none &none &none &none
+				BIG_BETWEEN_ROW_THREE_THUMBS
+				&none &sys_reset &bootloader
+				BIG_TRAILING_NONES
+			>;
+		};
+		#else
+		bt {
+			display-name = "BT";
 			bindings = <
 				LEADING_NONES
 				&bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 ARDUX_BT_TOP
@@ -399,10 +439,21 @@
 				TRAILING_NONES
 			>;
 		};
+		#endif
+		mouse {
+			display-name = "Mouse";
+			bindings = <
+				LEADING_NONES
+				&mkp LCLK                                        &mmv MOVE_UP    &mkp RCLK        &msc SCRL_UP
+				MIDDLE_NONES
+				&mmv MOVE_LEFT                                   &mmv MOVE_DOWN  &mmv MOVE_RIGHT  &msc SCRL_DOWN
+				TRAILING_NONES
+			>;
+		};
 		ARDUX_LAYER_CUSTOM
 		#if defined ARDUX_BIG
 		big_ardux_symbol {
-			label = "*Symbol*";
+			display-name = "*Symbol*";
 			bindings = <
 				BIG_LEADING_NONES
 				&kp GRAVE &kp HASH  &kp LBRC &kp RBRC &kp CARET
@@ -416,7 +467,7 @@
 			>;
 		};
 		big_ardux_function {
-			label = "*Func*";
+			display-name = "*Func*";
 			bindings = <
 				BIG_LEADING_NONES
 				&none  &kp F1 &kp F2  &kp F3  &kp F4
@@ -444,7 +495,7 @@
 		compatible = "zmk,keymap";
 		#if defined ARDUX_BIG
 		base {
-			label = "*ARDUX*";
+			display-name = "*ARDUX*";
 			bindings = <
 				BIG_LEADING_NONES
 				&layer_numbers_kp LAYER_ID_NUMBERS ARDUX_BASE_S    &kp ARDUX_BASE_T     &kp ARDUX_BASE_R     &layer_parentheticals_kp LAYER_ID_PARENTHETICALS ARDUX_BASE_A &kp MINUS
@@ -459,7 +510,7 @@
 		};
 		#else
 		base {
-			label = "ARDUX";
+			display-name = "ARDUX";
 			bindings = <
 				LEADING_NONES
 				&layer_numbers_kp LAYER_ID_NUMBERS ARDUX_BASE_S        &kp ARDUX_BASE_T     &kp ARDUX_BASE_R     &layer_parentheticals_kp LAYER_ID_PARENTHETICALS ARDUX_BASE_A
@@ -472,8 +523,24 @@
 			>;
 		};
 		#endif
+		#if defined ARDUX_BIG
 		numbers {
-			label = "Number";
+			display-name = "Number";
+			bindings = <
+				BIG_LEADING_NONES
+				&mo LAYER_ID_NUMBERS &kp N3 &kp N2 &kp N1 &kp MINUS
+				BIG_BETWEEN_ROW_ONE_TWO_NONES
+				&none &kp N6 &kp N5 &kp N4 &kp SLASH
+				BIG_BETWEEN_ROW_TWO_THREE_NONES
+				&none &none &none &kp TAB &kp COLON
+				BIG_BETWEEN_ROW_THREE_THUMBS
+				&kp TAB &kp UNDERSCORE &kp SPACE
+				BIG_TRAILING_NONES
+			>;
+		};
+		#else
+		numbers {
+			display-name = "Number";
 			bindings = <
 				LEADING_NONES
 				&mo LAYER_ID_NUMBERS                        &kp N3    &kp N2    &kp N1
@@ -482,8 +549,9 @@
 				TRAILING_NONES
 			>;
 		};
+		#endif
 		symbols {
-			label = "Symbol";
+			display-name = "Symbol";
 			bindings = <
 				LEADING_NONES
 				&kp GRAVE                                   &kp SEMI  &kp BSLH  &kp EXCL
@@ -493,7 +561,7 @@
 			>;
 		};
 		parentheticals {
-			label = "Paren";
+			display-name = "Paren";
 			bindings = <
 				LEADING_NONES
 				&kp LBRC                                    &kp LPAR  &kp RPAR  &mo LAYER_ID_PARENTHETICALS
@@ -503,7 +571,7 @@
 			>;
 		};
 		navigation {
-			label = "Nav";
+			display-name = "Nav";
 			bindings = <
 				LEADING_NONES
 				&kp PG_UP                                   &kp HOME  &kp UP    &kp END
@@ -512,8 +580,24 @@
 				TRAILING_NONES
 			>;
 		};
+		#if defined ARDUX_BIG
 		bt {
-			label = "BT";
+			display-name = "BT";
+			bindings = <
+				BIG_LEADING_NONES
+				ARDUX_BT_TOP    &bt BT_SEL 2 &bt BT_SEL 1 &bt BT_SEL 0 &none
+				BIG_BETWEEN_ROW_ONE_TWO_NONES
+				ARDUX_BT_BOTTOM &bt BT_SEL 5 &bt BT_SEL 4 &bt BT_SEL 3 &none
+				BIG_BETWEEN_ROW_TWO_THREE_NONES
+				&none &none &none &none &none
+				BIG_BETWEEN_ROW_THREE_THUMBS
+				&bootloader &sys_reset &none
+				BIG_TRAILING_NONES
+			>;
+		};
+		#else
+		bt {
+			display-name = "BT";
 			bindings = <
 				LEADING_NONES
 				ARDUX_BT_TOP    &bt BT_SEL 2 &bt BT_SEL 1 &bt BT_SEL 0
@@ -522,10 +606,21 @@
 				TRAILING_NONES
 			>;
 		};
+		#endif
+		mouse {
+			display-name = "Mouse";
+			bindings = <
+				LEADING_NONES
+				&msc SCRL_UP                                   &mkp RCLK  &mmv MOVE_UP    &mkp LCLK
+				MIDDLE_NONES
+				&msc SCRL_DOWN                                   &mmv MOVE_LEFT  &mmv MOVE_DOWN  &mmv MOVE_RIGHT
+				TRAILING_NONES
+			>;
+		};
 		ARDUX_LAYER_CUSTOM
 		#if defined ARDUX_BIG
 		big_ardux_symbol {
-			label = "*Symbol*";
+			display-name = "*Symbol*";
 			bindings = <
 				BIG_LEADING_NONES
 				&kp CARET &kp LBRC &kp RBRC &kp HASH  &kp GRAVE
@@ -539,7 +634,7 @@
 			>;
 		};
 		big_ardux_function {
-			label = "*Func*";
+			display-name = "*Func*";
 			bindings = <
 				BIG_LEADING_NONES
 				&kp F4  &kp F3  &kp F2  &kp F1  &none
