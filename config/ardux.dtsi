@@ -651,8 +651,3 @@
 	};
 };
 #endif
-
-// Opt in per shield, without changing the default ARDUX layouts.
-#if defined ARTSEY_09
-#include "artsey-0.9.dtsi"
-#endif
