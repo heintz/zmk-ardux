@@ -35,6 +35,8 @@
 #include "../../../ardux.dtsi"
 
 // ARTSEY 0.9 beta overrides for this Paintbrush only. See docs/artsey-0.9.md.
+// Defer one-shot Shift so it cannot interfere with the latched Shift state.
+&sk { lazy; };
 / {
 	behaviors {
 		mod_off: mod_off {
@@ -56,6 +58,8 @@
 		combo_control { bindings = <&kt LCTRL>; };
 		combo_gui { bindings = <&kt LGUI>; };
 		combo_alt { bindings = <&kt LALT>; };
+		combo_backspace { key-positions = <KEY_I KEY_R>; };
+		combo_delete { key-positions = <KEY_E KEY_R>; };
 		/delete-node/ combo_shift_lock;
 		combo_caps_lock { bindings = <&kt LSHFT>; layers = <LAYER_ID_BASE LAYER_ID_NAVIGATION>; };
 		combo_period { key-positions = <KEY_A KEY_I>; };
