@@ -64,6 +64,7 @@ def exercise(hand, beta, app, regression=False):
 
         # Hold E for punctuation, A for paired brackets, O for media.
         for anchor, keys in [
+            ("S", [("AI", 7, 0x37), ("AY", 7, 0x36), ("YI", 7, 0x27)]),
             ("E", [("A", 7, 0x20), ("R", 7, 0x35), ("T", 7, 0x33),
                    ("S", 7, 0x31), ("Y", 7, 0x1F), ("I", 7, 0x2D), ("O", 7, 0x2E)]),
             ("A", [("R", 7, 0x26), ("Y", 7, 0x27), ("T", 7, 0x2F),
