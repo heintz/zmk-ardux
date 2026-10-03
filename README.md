@@ -2,6 +2,10 @@
 
 This repo contains the [ZMK](https://zmkfirmware.dev/) ARDUX implementation and pre-built firmware for boards that have been setup to use ARDUX by the core ARDUX development team.
 
+## Personal Paintbrush configuration
+
+The left-handed Paintbrush opts into [ARTSEY 0.9 beta](docs/artsey-0.9.md). Other shields keep their existing ARDUX layouts. See [Pair the Paintbrush with Apple devices](docs/pairing.md) for the Bluetooth chords and your custom disconnect keys.
+
 ## Prebuilt Firmware
 
 The `Releases` area of this repository contains the latest builds of the ZMK ARDUX implementation. You can click on the most recent release and download the appropriate artifact for your MCU + board combination. Inside the zip file will be the necessary file for flashing your MCU.
@@ -15,7 +19,7 @@ Inside the firmware zip file will be 4 files
 - A file with `-zmk-ardux.hex` at the end that is the hex firmware image that can be used to flash your MCU
 - A file with `-zmk-ardux.uf2` at the end that is the uf2 firmware image that can be used to flash your MCU
 
-Please Note: the `hex` and `uf2` files may or may not be present depending on your MCU + board combo. **PLEASE** use the proper file for flashing your board. 
+Please Note: the `hex` and `uf2` files may or may not be present depending on your MCU + board combo. **PLEASE** use the proper file for flashing your board.
 
 **We are NOT responsible for any failed firmware flashes!**
 

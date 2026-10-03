@@ -129,6 +129,7 @@ jobs:
             ${{ matrix.shield }}-${{ matrix.board }}-zmk-ardux.uf2
         continue-on-error: true
   release:
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     name: Create Release
     needs: build

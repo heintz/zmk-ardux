@@ -10,6 +10,7 @@
 
 // Left/Right
 #define ARDUX_LEFT 1
+#define ARTSEY_09 1
 
 // ARTS Row
 #define KEY_A 3
