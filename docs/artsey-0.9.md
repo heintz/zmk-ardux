@@ -5,7 +5,8 @@ Only `the_paintbrush_left.keymap` changes. Other boards keep ARDUX. The [ARTSEY 
 The port follows the latest [0.9 combos](https://github.com/artseyio/qmk-artsey/blob/c9a86ac6bd7f6b68a1be8f7895445a94207005db/Firmware%20Files/Version%200.9.0/Left%20Hand/combos.txt) and [left-hand keys](https://github.com/artseyio/qmk-artsey/blob/c9a86ac6bd7f6b68a1be8f7895445a94207005db/Firmware%20Files/Version%200.9.0/Left%20Hand/key.txt):
 
 - Period moves to A+I, comma to A+Y, and apostrophe to R+Y. Question mark gets S+O. T+I stays `!`, and A+O stays `/`.
-- Control S+E, Command S+Y, and Option S+I become toggles. Repeat the chord to release it. One-shot Shift E+R+T+S stays unchanged.
+- The latest left-hand beta maps Backspace to R+I and forward Delete to R+E. These differ from the right-hand beta.
+- Control S+E, Command S+Y, and Option S+I become toggles. Repeat the chord to release it. One-shot Shift remains E+R+T+S, but activates lazily to avoid interfering with latched Shift.
 - Latched Shift moves to A+Y+I+O, replacing Caps Lock. All eight keys release latched modifiers and return to base. Pending one-shot Shift retains its normal timeout; the panic macro does not reset ZMK's internal sticky-key state.
 - Hold E for punctuation. A/R/T/S produce hash, grave accent, semicolon, and backslash. Y/I/O produce at sign, minus, and equals.
 - Hold A for brackets. R/Y produce opening/closing parentheses, T/I produce square brackets, and S/O produce braces.
