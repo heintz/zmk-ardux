@@ -64,6 +64,8 @@
 		combo_caps_lock { bindings = <&kt LSHFT>; layers = <LAYER_ID_BASE LAYER_ID_NAVIGATION>; };
 		combo_period { key-positions = <KEY_A KEY_I>; };
 		combo_comma { key-positions = <KEY_A KEY_Y>; };
+		combo_num_period { key-positions = <KEY_A KEY_I>; };
+		combo_num_comma { key-positions = <KEY_A KEY_Y>; };
 		combo_single_quote { key-positions = <KEY_R KEY_Y>; timeout-ms = <TIMEOUT_COMBO_2>; };
 		combo_question {
 			layers = <LAYER_ID_BASE>;
