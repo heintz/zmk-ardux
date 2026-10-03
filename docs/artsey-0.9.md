@@ -1,6 +1,6 @@
 # Paintbrush ARTSEY 0.9 beta
 
-Only `the_paintbrush_left.keymap` changes. Other boards keep ARDUX. The [ARTSEY site](https://github.com/artseyio/artsey/blob/84404d5188e9a9401322e318de2f68754928215f/docs/index.md) still labels 0.8.1 as current and 0.9 as beta. The beta announcement dates to February 2024, with source corrections through March 2024.
+Only the left-handed Paintbrush layout changes. Other boards keep ARDUX. The [ARTSEY site](https://github.com/artseyio/artsey/blob/84404d5188e9a9401322e318de2f68754928215f/docs/index.md) still labels 0.8.1 as current and 0.9 as beta. The beta announcement dates to February 2024, with source corrections through March 2024.
 
 The port follows the latest [0.9 combos](https://github.com/artseyio/qmk-artsey/blob/c9a86ac6bd7f6b68a1be8f7895445a94207005db/Firmware%20Files/Version%200.9.0/Left%20Hand/combos.txt) and [left-hand keys](https://github.com/artseyio/qmk-artsey/blob/c9a86ac6bd7f6b68a1be8f7895445a94207005db/Firmware%20Files/Version%200.9.0/Left%20Hand/key.txt):
 
