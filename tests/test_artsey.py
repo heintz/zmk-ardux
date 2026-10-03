@@ -89,13 +89,20 @@ def exercise(hand, beta, app, regression=False):
         chord("A", 0x04)
         chord("R", 0x15)
         if regression:
-            # Arm one-shot Shift, then latch Shift before its timeout.
-            # The latch must survive the one-shot timer expiring.
+            # Left beta Backspace/Delete are not mirrors of the right layout.
+            chord("IR")
+            chord("ER")
+            # A Shift latch must survive an armed one-shot's timer expiring.
             chord("ERTS")
             chord("AYIO", hold=6000)
-            expected.append((7, 0xE1, True, 0))
-            chord("R", 0x15)
-            toggle("AYIO", 0xE1, False)
+            chord("R")
+            chord("ARTSEYIO")
+            # Panic must immediately clear registered Shift, even with both
+            # the latch and a pending one-shot. Wait before checking plain R.
+            chord("AYIO")
+            chord("ERTS")
+            chord("ARTSEYIO", hold=6000)
+            chord("R")
     else:
         # An unopted-in board keeps ARDUX punctuation and Caps Lock.
         for keys, code in [("AY", 0x37), ("AI", 0x36), ("AYI", 0x34), ("AYIO", 0x39)]:
@@ -132,18 +139,30 @@ def exercise(hand, beta, app, regression=False):
                       r"hid_listener_keycode_(pressed|released): usage_page 0x([0-9A-Fa-f]+) keycode 0x([0-9A-Fa-f]+) implicit_mods 0x([0-9A-Fa-f]+)", output)]
         if regression:
             reports = []
-            pressed = None
+            current = None
+            mask = 0
             for line in output.splitlines():
-                match = re.search(r"hid_listener_keycode_pressed: usage_page 0x07 keycode 0x([0-9A-Fa-f]+)", line)
-                if match:
-                    pressed = int(match[1], 16)
-                mask = re.search(r"Modifiers set to 0x([0-9A-Fa-f]+)", line)
-                if mask and pressed is not None:
-                    reports.append((pressed, int(mask[1], 16)))
-                    pressed = None
-            last_r = [mask for key, mask in reports if key == 0x15][-1]
-            if last_r != 2:
-                raise AssertionError(f"One-shot Shift canceled the Shift latch: R report modifiers expected 0x02, got 0x{last_r:02x}")
+                event = re.search(r"hid_listener_keycode_(pressed|released): usage_page 0x07 keycode 0x([0-9A-Fa-f]+)", line)
+                if event:
+                    if current is not None:
+                        reports.append((*current, mask))
+                    current = (int(event[2], 16), event[1] == "pressed")
+                update = re.search(r"Modifiers set to 0x([0-9A-Fa-f]+)", line)
+                if update:
+                    mask = int(update[1], 16)
+            if current is not None:
+                reports.append((*current, mask))
+            extras = actual[len(expected):]
+            editing = [code for page, code, pressed, _ in extras if page == 7 and pressed and code < 0xE0][:2]
+            r_masks = [mods for key, pressed, mods in reports if key == 0x15 and pressed][-2:]
+            panic_masks = [reports[i + 3][2] for i in range(len(reports) - 3)
+                           if [(key, pressed) for key, pressed, _ in reports[i:i+4]]
+                           == [(0xE0, False), (0xE3, False), (0xE2, False), (0xE1, False)]]
+            print(f"Regression results: editing={editing}, R modifiers={r_masks}, panic modifiers={panic_masks[-1:]}")
+            if editing != [0x2A, 0x4C] or r_masks != [2, 0] or panic_masks[-1:] != [0]:
+                raise AssertionError("Expected Backspace/Delete [42, 76], latched/plain R modifiers [2, 0], immediate panic modifiers [0]")
+            # The prefix still checks all original normal-typing scenarios.
+            actual = actual[:len(expected)]
         if actual != expected:
             raise AssertionError(f"{hand} beta={beta}\nexpected: {expected}\nactual:   {actual}\nFull log: {log}")
         if beta:
