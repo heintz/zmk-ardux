@@ -57,7 +57,8 @@ jobs:
         run: west build -s zmk/app -b ${{ matrix.board }} -- ${{ steps.variables.outputs.shield-arg }} -DZMK_CONFIG="${GITHUB_WORKSPACE}/config"
       - name: Verify stock settings-reset configuration
         run: |
-          grep -Fx 'CONFIG_BOARD="nice_nano_v2"' build/zephyr/.config
+          grep -E 'CONFIG_(BOARD|SOC|SETTINGS|ZMK_(SETTINGS|BLE|KEYBOARD))|# CONFIG_ZMK_BLE' build/zephyr/.config
+          grep -Fx 'CONFIG_BOARD_NICE_NANO_V2=y' build/zephyr/.config
           grep -Fx 'CONFIG_SETTINGS=y' build/zephyr/.config
           grep -Fx 'CONFIG_ZMK_SETTINGS_RESET_ON_START=y' build/zephyr/.config
           grep -Fx '# CONFIG_ZMK_BLE is not set' build/zephyr/.config
